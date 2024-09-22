@@ -22,6 +22,10 @@ mybatis-plus:
     db-config:
       id-type: auto
 
+coupon:
+  username: "张三"
+  password: 123456
+
 
 
 
