@@ -1,5 +1,3 @@
- 
-
 package com.bubbleboy.gulimall.thirdparty;
 
 import org.springframework.boot.SpringApplication;
