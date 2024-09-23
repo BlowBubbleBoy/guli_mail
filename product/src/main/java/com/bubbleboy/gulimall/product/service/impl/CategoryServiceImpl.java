@@ -3,6 +3,7 @@ package com.bubbleboy.gulimall.product.service.impl;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,24 +32,21 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<CategoryEntity> page = this.page(
                 new Query<CategoryEntity>().getPage(params),
-                new QueryWrapper<CategoryEntity>()
+                new QueryWrapper<>()
         );
 
         return new PageUtils(page);
     }
 
     @Override
-    public List<CategoryEntity> treeList() {
+    public List<CategoryEntity> listTree() {
 
         List<CategoryEntity> categoryList = categoryDao.selectList(null);
 
         Map<Long, List<CategoryEntity>> map = categoryList.stream()
                 .collect(Collectors.groupingBy(CategoryEntity::getParentCid));
 
-        categoryList.sort((menu1, menu2) -> {
-            return (menu1.getSort() == null ? 0 : menu1.getSort())
-                    - (menu2.getSort() == null ? 0 : menu2.getSort());
-        });
+        categoryList.sort(Comparator.comparingInt(menu -> (menu.getSort() == null ? 0 : menu.getSort())));
 
 
         List<CategoryEntity> rootList = map.getOrDefault(0L, new ArrayList<>());

@@ -1,6 +1,5 @@
 package com.bubbleboy.gulimall.product;
 
-
 import com.bubbleboy.gulimall.product.entity.CategoryEntity;
 import com.bubbleboy.gulimall.product.service.CategoryService;
 import org.junit.Test;
@@ -24,8 +23,6 @@ public class ProductApplicationTests {
         for (CategoryEntity categoryEntity : list) {
             System.out.println(categoryEntity);
         }
-
-
     }
 
 }

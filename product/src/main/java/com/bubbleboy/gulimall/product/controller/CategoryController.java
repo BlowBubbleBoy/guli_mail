@@ -31,9 +31,9 @@ public class CategoryController {
     /**
      * 查询商品三级分类
      */
-    @GetMapping("/tree/list")
-    public R treeList() {
-        List<CategoryEntity> entities = categoryService.treeList();
+    @GetMapping("/list/tree")
+    public R listTree() {
+        List<CategoryEntity> entities = categoryService.listTree();
 
         return R.ok().put("data",entities);
     }
@@ -79,6 +79,14 @@ public class CategoryController {
     //@RequiresPermissions("product:category:update")
     public R update(@RequestBody CategoryEntity category){
 		categoryService.updateById(category);
+
+        return R.ok();
+    }
+
+    @RequestMapping("/update/sort")
+    //@RequiresPermissions("product:category:update")
+    public R update(@RequestBody CategoryEntity[] categorys){
+        categoryService.updateBatchById(Arrays.asList(categorys));
 
         return R.ok();
     }
