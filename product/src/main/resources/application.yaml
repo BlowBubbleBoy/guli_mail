@@ -24,7 +24,7 @@ mybatis-plus:
       logic-not-delete-value: 1
 logging:
   level:
-    org.apache.ibatis: debug
+    com.bubbleboy.gulimall: debug
 
 
 

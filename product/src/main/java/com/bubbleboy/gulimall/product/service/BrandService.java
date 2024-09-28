@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.bubbleboy.gulimall.common.utils.PageUtils;
 import com.bubbleboy.gulimall.product.entity.BrandEntity;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 /**
@@ -16,5 +17,7 @@ import java.util.Map;
 public interface BrandService extends IService<BrandEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void saveDetail(@Valid BrandEntity brand);
 }
 

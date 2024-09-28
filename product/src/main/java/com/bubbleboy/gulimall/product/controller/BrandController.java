@@ -72,7 +72,7 @@ public class BrandController {
     @RequestMapping("/update")
     //@RequiresPermissions("product:brand:update")
     public R update(@RequestBody BrandEntity brand){
-		brandService.updateById(brand);
+		brandService.saveDetail(brand);
 
         return R.ok();
     }

@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @FeignClient("product")
 public interface TestFeignService {
 
-    @GetMapping("/product/category/tree/list")
+    @GetMapping("/product/category/list/tree")
     R treeList();
 }
