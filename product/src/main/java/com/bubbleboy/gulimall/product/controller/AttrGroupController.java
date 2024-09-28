@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 
+import com.bubbleboy.gulimall.product.controller.vo.AttrGroupAndAttrs;
 import com.bubbleboy.gulimall.product.entity.AttrAttrgroupRelationEntity;
 import com.bubbleboy.gulimall.product.entity.AttrEntity;
 import com.bubbleboy.gulimall.product.entity.AttrGroupEntity;
@@ -46,6 +47,14 @@ public class AttrGroupController {
         PageUtils page = attrGroupService.queryPage(params, catelogId);
 
         return R.ok().put("page", page);
+    }
+
+    @GetMapping("/{catelogId}/withattr")
+    public R getAttrGroupWithAttr(@PathVariable("catelogId") Long catelogId) {
+
+        List<AttrGroupAndAttrs> data = attrGroupService.getAttrGroupWithAttrs(catelogId);
+
+        return R.ok().put("data", data);
     }
 
     @GetMapping("/{attrGroupId}/attr/relation")

@@ -6,6 +6,7 @@ import com.bubbleboy.gulimall.product.dao.CategoryDao;
 import com.bubbleboy.gulimall.product.entity.BrandEntity;
 
 
+import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -62,6 +63,12 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
     @Override
     public void updateBrandNameById(Long brandId, String name) {
         categoryBrandRelationDao.updateBrandNameById(brandId, name);
+    }
+
+    @Override
+    public List<CategoryBrandRelationEntity> getBrandListBycatId(Long catId) {
+
+        return categoryBrandRelationDao.selectList(new QueryWrapper<CategoryBrandRelationEntity>().eq("catelog_id", catId));
     }
 
 }

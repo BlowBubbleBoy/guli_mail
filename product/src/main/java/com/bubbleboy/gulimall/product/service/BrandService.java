@@ -5,6 +5,7 @@ import com.bubbleboy.gulimall.common.utils.PageUtils;
 import com.bubbleboy.gulimall.product.entity.BrandEntity;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,5 +20,6 @@ public interface BrandService extends IService<BrandEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     void saveDetail(@Valid BrandEntity brand);
+
 }
 

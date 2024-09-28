@@ -1,10 +1,14 @@
 package com.bubbleboy.gulimall.product.service.impl;
 
+import com.bubbleboy.gulimall.product.dao.CategoryBrandRelationDao;
+import com.bubbleboy.gulimall.product.entity.CategoryBrandRelationEntity;
 import com.bubbleboy.gulimall.product.service.CategoryBrandRelationService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -23,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> implements BrandService {
     @Autowired
     private CategoryBrandRelationService categoryBrandRelationService;
+    @Autowired
+    private CategoryBrandRelationDao categoryBrandRelationDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {

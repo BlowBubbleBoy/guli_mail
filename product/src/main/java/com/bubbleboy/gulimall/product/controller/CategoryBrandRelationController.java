@@ -3,8 +3,11 @@ package com.bubbleboy.gulimall.product.controller;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.bubbleboy.gulimall.product.controller.vo.BrandVo;
+import com.bubbleboy.gulimall.product.entity.BrandEntity;
 import com.bubbleboy.gulimall.product.service.BrandService;
 import com.bubbleboy.gulimall.product.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +31,6 @@ import com.bubbleboy.gulimall.common.utils.R;
 public class CategoryBrandRelationController {
     @Autowired
     private CategoryBrandRelationService categoryBrandRelationService;
-    @Autowired
-    private BrandService brandService;
-    @Autowired
-    private CategoryService categoryService;
 
     /**
      * 列表
@@ -42,6 +41,17 @@ public class CategoryBrandRelationController {
         PageUtils page = categoryBrandRelationService.queryPage(params);
 
         return R.ok().put("page", page);
+    }
+
+    /**
+     * 列表
+     */
+    @GetMapping("/brands/list")
+    public R getBrandList(@RequestParam("catId") Long catId) {
+
+        List<CategoryBrandRelationEntity> brandEntities = categoryBrandRelationService.getBrandListBycatId(catId);
+
+        return R.ok().put("data", brandEntities);
     }
 
     @GetMapping("/catelog/list")
