@@ -3,8 +3,8 @@ package com.bubbleboy.gulimall.product.controller;
 
 import com.bubbleboy.gulimall.common.utils.PageUtils;
 import com.bubbleboy.gulimall.common.utils.R;
-import com.bubbleboy.gulimall.product.controller.vo.AttrRespVo;
-import com.bubbleboy.gulimall.product.controller.vo.AttrVo;
+import com.bubbleboy.gulimall.product.vo.AttrRespVo;
+import com.bubbleboy.gulimall.product.vo.AttrVo;
 import com.bubbleboy.gulimall.product.service.AttrService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,11 +37,11 @@ public class AttrController {
         return R.ok().put("page", page);
     }
 
-    @GetMapping("/{attrType}/list/{catelogId}")
+    @GetMapping("/{attrType}/list/{catalogId}")
     //@RequiresPermissions("product:attr:list")
-    public R baseList(@RequestParam Map<String, Object> params, @PathVariable("catelogId") Long catelogId, @PathVariable("attrType") String attrType) {
+    public R baseList(@RequestParam Map<String, Object> params, @PathVariable("catalogId") Long catalogId, @PathVariable("attrType") String attrType) {
 
-        PageUtils page = attrService.baseList(params, catelogId, attrType);
+        PageUtils page = attrService.baseList(params, catalogId, attrType);
 
         return R.ok().put("page", page);
 

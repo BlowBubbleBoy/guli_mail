@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 
-import com.bubbleboy.gulimall.product.controller.vo.AttrGroupAndAttrs;
+import com.bubbleboy.gulimall.product.vo.AttrGroupAndAttrs;
 import com.bubbleboy.gulimall.product.entity.AttrAttrgroupRelationEntity;
 import com.bubbleboy.gulimall.product.entity.AttrEntity;
 import com.bubbleboy.gulimall.product.entity.AttrGroupEntity;
@@ -41,18 +41,18 @@ public class AttrGroupController {
     /**
      * 列表
      */
-    @RequestMapping("/list/{catelogId}")
+    @RequestMapping("/list/{catalogId}")
     //@RequiresPermissions("product:attrgroup:list")
-    public R list(@RequestParam Map<String, Object> params, @PathVariable("catelogId") Long catelogId) {
-        PageUtils page = attrGroupService.queryPage(params, catelogId);
+    public R list(@RequestParam Map<String, Object> params, @PathVariable("catalogId") Long catalogId) {
+        PageUtils page = attrGroupService.queryPage(params, catalogId);
 
         return R.ok().put("page", page);
     }
 
-    @GetMapping("/{catelogId}/withattr")
-    public R getAttrGroupWithAttr(@PathVariable("catelogId") Long catelogId) {
+    @GetMapping("/{catalogId}/withattr")
+    public R getAttrGroupWithAttr(@PathVariable("catalogId") Long catalogId) {
 
-        List<AttrGroupAndAttrs> data = attrGroupService.getAttrGroupWithAttrs(catelogId);
+        List<AttrGroupAndAttrs> data = attrGroupService.getAttrGroupWithAttrs(catalogId);
 
         return R.ok().put("data", data);
     }
@@ -77,8 +77,8 @@ public class AttrGroupController {
     public R info(@PathVariable("attrGroupId") Long attrGroupId) {
         AttrGroupEntity attrGroup = attrGroupService.getById(attrGroupId);
 
-        List<Long> catelogPath = categoryService.getCatelogPath(attrGroup.getCatelogId());
-        attrGroup.setCatelogPath(catelogPath);
+        List<Long> catalogPath = categoryService.getCatalogPath(attrGroup.getCatalogId());
+        attrGroup.setCatalogPath(catalogPath);
 
         return R.ok().put("attrGroup", attrGroup);
     }

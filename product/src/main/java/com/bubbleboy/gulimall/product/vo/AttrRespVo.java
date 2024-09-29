@@ -1,4 +1,4 @@
-package com.bubbleboy.gulimall.product.controller.vo;
+package com.bubbleboy.gulimall.product.vo;
 
 import lombok.Data;
 
@@ -42,7 +42,7 @@ public class AttrRespVo {
     /**
      * 所属分类
      */
-    private Long catelogId;
+    private Long catalogId;
     /**
      * 快速展示【是否展示在介绍上；0-否 1-是】，在sku中仍然可以调整
      */
@@ -52,7 +52,7 @@ public class AttrRespVo {
 
     private String groupName;
 
-    private String catelogName;
+    private String catalogName;
 
-    private List<Long> catelogPath;
+    private List<Long> catalogPath;
 }

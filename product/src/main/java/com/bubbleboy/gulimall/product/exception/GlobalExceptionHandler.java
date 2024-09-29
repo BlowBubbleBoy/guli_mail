@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public R exception(Exception e) {
 
-
+        log.error(e.getMessage());
         return R.error(ExcCodeEnum.UNKNOWN_EXCEPTION.getCode(),ExcCodeEnum.UNKNOWN_EXCEPTION.getMsg()).put("data", e.getMessage());
     }
 }

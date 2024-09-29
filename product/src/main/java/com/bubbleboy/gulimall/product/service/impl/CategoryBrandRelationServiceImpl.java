@@ -48,16 +48,16 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
 
     @Override
     public void saveDetail(CategoryBrandRelationEntity categoryBrandRelation) {
-        CategoryEntity categoryEntity = categoryDao.selectById(categoryBrandRelation.getCatelogId());
+        CategoryEntity categoryEntity = categoryDao.selectById(categoryBrandRelation.getCatalogId());
         BrandEntity brandEntity = brandDao.selectById(categoryBrandRelation.getBrandId());
         categoryBrandRelation.setBrandName(brandEntity.getName());
-        categoryBrandRelation.setCatelogName(categoryEntity.getName());
+        categoryBrandRelation.setCatalogName(categoryEntity.getName());
         this.save(categoryBrandRelation);
     }
 
     @Override
     public void updateCategoryNameById(Long catId, String name) {
-        categoryBrandRelationDao.update(new CategoryBrandRelationEntity(), new UpdateWrapper<CategoryBrandRelationEntity>().eq("catelog_id", catId));
+        categoryBrandRelationDao.update(new CategoryBrandRelationEntity(), new UpdateWrapper<CategoryBrandRelationEntity>().eq("catalog_id", catId));
     }
 
     @Override
@@ -68,7 +68,7 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
     @Override
     public List<CategoryBrandRelationEntity> getBrandListBycatId(Long catId) {
 
-        return categoryBrandRelationDao.selectList(new QueryWrapper<CategoryBrandRelationEntity>().eq("catelog_id", catId));
+        return categoryBrandRelationDao.selectList(new QueryWrapper<CategoryBrandRelationEntity>().eq("catalog_id", catId));
     }
 
 }

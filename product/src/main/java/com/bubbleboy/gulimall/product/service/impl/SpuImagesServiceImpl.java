@@ -15,6 +15,7 @@ import com.bubbleboy.gulimall.common.utils.Query;
 import com.bubbleboy.gulimall.product.dao.SpuImagesDao;
 import com.bubbleboy.gulimall.product.entity.SpuImagesEntity;
 import com.bubbleboy.gulimall.product.service.SpuImagesService;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("spuImagesService")
@@ -24,13 +25,14 @@ public class SpuImagesServiceImpl extends ServiceImpl<SpuImagesDao, SpuImagesEnt
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<SpuImagesEntity> page = this.page(
                 new Query<SpuImagesEntity>().getPage(params),
-                new QueryWrapper<SpuImagesEntity>()
+                new QueryWrapper<>()
         );
 
         return new PageUtils(page);
     }
 
     @Override
+    @Transactional
     public void saveSpuImages(Long id, List<String> images) {
         if (images != null && !images.isEmpty()) {
             List<SpuImagesEntity> imagesEntities = images.stream().map(image -> {

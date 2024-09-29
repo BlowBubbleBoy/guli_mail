@@ -2,8 +2,8 @@ package com.bubbleboy.gulimall.product.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.bubbleboy.gulimall.common.constant.ProductConstant;
-import com.bubbleboy.gulimall.product.controller.vo.AttrRespVo;
-import com.bubbleboy.gulimall.product.controller.vo.AttrVo;
+import com.bubbleboy.gulimall.product.vo.AttrRespVo;
+import com.bubbleboy.gulimall.product.vo.AttrVo;
 import com.bubbleboy.gulimall.product.dao.AttrAttrgroupRelationDao;
 import com.bubbleboy.gulimall.product.dao.AttrGroupDao;
 import com.bubbleboy.gulimall.product.dao.CategoryDao;
@@ -73,11 +73,11 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     }
 
     @Override
-    public PageUtils baseList(Map<String, Object> params, Long catelogId, String attrType) {
+    public PageUtils baseList(Map<String, Object> params, Long catalogId, String attrType) {
         QueryWrapper<AttrEntity> wrapper = new QueryWrapper<AttrEntity>().eq("attr_type",
                 ProductConstant.AttrEnum.ATTR_TYPE_BASE.getValue().equalsIgnoreCase(attrType) ? ProductConstant.AttrEnum.ATTR_TYPE_BASE.getCode() : ProductConstant.AttrEnum.ATTR_TYPE_SALE.getCode());
-        if (catelogId != 0) {
-            wrapper.eq("catelog_id", catelogId);
+        if (catalogId != 0) {
+            wrapper.eq("catalog_id", catalogId);
         }
         String key = (String) params.get("key");
         if (StringUtils.isNotBlank(key)) {
@@ -89,7 +89,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         List<AttrRespVo> data = records.stream().map(record -> {
             AttrRespVo attrRespVo = new AttrRespVo();
             BeanUtils.copyProperties(record, attrRespVo);
-            CategoryEntity category = categoryDao.selectById(record.getCatelogId());
+            CategoryEntity category = categoryDao.selectById(record.getCatalogId());
             if (ProductConstant.AttrEnum.ATTR_TYPE_BASE.getValue().equals(attrType)) {
                 AttrAttrgroupRelationEntity relationEntity = attrAttrgroupRelationDao.selectOne(new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_id", record.getAttrId()));
                 if (relationEntity != null && relationEntity.getAttrGroupId() != null) {
@@ -98,7 +98,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
                 }
             }
             if (category != null) {
-                attrRespVo.setCatelogName(category.getName());
+                attrRespVo.setCatalogName(category.getName());
             }
             return attrRespVo;
         }).collect(Collectors.toList());
@@ -116,7 +116,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         }
 
         BeanUtils.copyProperties(attr, attrRespVo);
-        List<Long> catelogPath = categoryService.getCatelogPath(attrRespVo.getCatelogId());
+        List<Long> catalogPath = categoryService.getCatalogPath(attrRespVo.getCatalogId());
         if (ProductConstant.AttrEnum.ATTR_TYPE_BASE.getCode().equals(attr.getAttrType().toString())) {
             AttrAttrgroupRelationEntity relationEntity = attrAttrgroupRelationService.getOne(new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_id", attrId));
             if (relationEntity != null && relationEntity.getAttrGroupId() != null) {
@@ -126,7 +126,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
             }
         }
 
-        attrRespVo.setCatelogPath(catelogPath);
+        attrRespVo.setCatalogPath(catalogPath);
 
         return attrRespVo;
     }
@@ -166,18 +166,18 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     @Override
     public PageUtils getNoAttrRelation(Map<String, Object> params, Long attrGroupId) {
         AttrGroupEntity attrGroupEntity = attrGroupDao.selectById(attrGroupId);
-        List<AttrGroupEntity> attrGroupEntities = attrGroupDao.selectList(new QueryWrapper<AttrGroupEntity>().eq("catelog_id", attrGroupEntity.getCatelogId()));
+        List<AttrGroupEntity> attrGroupEntities = attrGroupDao.selectList(new QueryWrapper<AttrGroupEntity>().eq("catalog_id", attrGroupEntity.getCatalogId()));
         List<Long> collect = attrGroupEntities.stream().map(AttrGroupEntity::getAttrGroupId).collect(Collectors.toList());
         List<AttrAttrgroupRelationEntity> attrInGroupList = attrAttrgroupRelationDao.selectList(new QueryWrapper<AttrAttrgroupRelationEntity>().in("attr_group_id", collect));
 
         List<Long> attrIds = attrInGroupList.stream().map(AttrAttrgroupRelationEntity::getAttrId).collect(Collectors.toList());
         QueryWrapper<AttrEntity> wrapper = new QueryWrapper<>();
-        wrapper.eq("catelog_id", attrGroupEntity.getCatelogId()).eq("attr_type", ProductConstant.AttrEnum.ATTR_TYPE_BASE.getCode());
+        wrapper.eq("catalog_id", attrGroupEntity.getCatalogId()).eq("attr_type", ProductConstant.AttrEnum.ATTR_TYPE_BASE.getCode());
         String key = (String) params.get("key");
         if (StringUtils.isNotBlank(key)) {
             wrapper.and(obj -> obj.eq("attr_id", key).or().like("attr_name", key));
         }
-        if (attrIds != null && !attrIds.isEmpty()) {
+        if (!attrIds.isEmpty()) {
             wrapper.notIn("attr_id", attrIds);
         }
 

@@ -2,8 +2,8 @@ package com.bubbleboy.gulimall.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.bubbleboy.gulimall.common.utils.PageUtils;
-import com.bubbleboy.gulimall.product.controller.vo.AttrRespVo;
-import com.bubbleboy.gulimall.product.controller.vo.AttrVo;
+import com.bubbleboy.gulimall.product.vo.AttrRespVo;
+import com.bubbleboy.gulimall.product.vo.AttrVo;
 import com.bubbleboy.gulimall.product.entity.AttrEntity;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public interface AttrService extends IService<AttrEntity> {
 
     void saveAttr(AttrVo attrVo);
 
-    PageUtils baseList(Map<String, Object> params, Long catelogId, String attrType);
+    PageUtils baseList(Map<String, Object> params, Long catalogId, String attrType);
 
     AttrRespVo getAttrInfo(Long attrId);
 

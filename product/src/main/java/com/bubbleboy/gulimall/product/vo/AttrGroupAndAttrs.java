@@ -1,7 +1,6 @@
-package com.bubbleboy.gulimall.product.controller.vo;
+package com.bubbleboy.gulimall.product.vo;
 
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.bubbleboy.gulimall.product.entity.AttrEntity;
 import lombok.Data;
 
 import java.util.List;
@@ -32,7 +31,7 @@ public class AttrGroupAndAttrs {
     /**
      * 所属分类id
      */
-    private Long catelogId;
+    private Long catalogId;
 
     private List<AttrVo> attrs;
 }

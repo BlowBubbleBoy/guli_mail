@@ -2,7 +2,7 @@ package com.bubbleboy.gulimall.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.bubbleboy.gulimall.common.utils.PageUtils;
-import com.bubbleboy.gulimall.product.controller.vo.AttrGroupAndAttrs;
+import com.bubbleboy.gulimall.product.vo.AttrGroupAndAttrs;
 import com.bubbleboy.gulimall.product.entity.AttrGroupEntity;
 
 import java.util.List;
@@ -17,8 +17,8 @@ import java.util.Map;
  */
 public interface AttrGroupService extends IService<AttrGroupEntity> {
 
-    PageUtils queryPage(Map<String, Object> params, Long catelogId);
+    PageUtils queryPage(Map<String, Object> params, Long catalogId);
 
-    List<AttrGroupAndAttrs> getAttrGroupWithAttrs(Long catelogId);
+    List<AttrGroupAndAttrs> getAttrGroupWithAttrs(Long catalogId);
 }
 

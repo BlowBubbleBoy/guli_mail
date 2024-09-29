@@ -68,10 +68,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     }
 
     @Override
-    public List<Long> getCatelogPath(Long catelogId) {
+    public List<Long> getCatalogPath(Long catalogId) {
         ArrayList<Long> list = new ArrayList<>();
-        CategoryEntity category = this.getById(catelogId);
-        this.getCatelogPath(category, list);
+        CategoryEntity category = this.getById(catalogId);
+        this.getCatalogPath(category, list);
         Collections.reverse(list);
         return list;
     }
@@ -86,11 +86,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         }
     }
 
-    private void getCatelogPath(CategoryEntity category, ArrayList<Long> list) {
+    private void getCatalogPath(CategoryEntity category, ArrayList<Long> list) {
         list.add(category.getCatId());
         if (category.getParentCid() != 0) {
             CategoryEntity categoryEntity = this.getById(category.getParentCid());
-            this.getCatelogPath(categoryEntity, list);
+            this.getCatalogPath(categoryEntity, list);
         }
     }
 

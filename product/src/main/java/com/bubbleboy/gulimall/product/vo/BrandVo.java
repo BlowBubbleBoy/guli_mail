@@ -1,4 +1,4 @@
-package com.bubbleboy.gulimall.product.controller.vo;
+package com.bubbleboy.gulimall.product.vo;
 
 import lombok.Data;
 

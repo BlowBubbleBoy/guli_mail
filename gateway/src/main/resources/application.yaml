@@ -5,10 +5,31 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: coupon_route
+          uri: lb://coupon
+          predicates:
+            - Path=/api/coupon/**
+          filters:
+            - RewritePath=/api/?(?<segment>.*), /$\{segment}
+
+        - id: ware_route
+          uri: lb://ware
+          predicates:
+            - Path=/api/ware/**
+          filters:
+            - RewritePath=/api/?(?<segment>.*), /$\{segment}
+
         - id: product_route
           uri: lb://product
           predicates:
             - Path=/api/product/**
+          filters:
+            - RewritePath=/api/?(?<segment>.*), /$\{segment}
+
+        - id: order_route
+          uri: lb://order
+          predicates:
+            - Path=/api/order/**
           filters:
             - RewritePath=/api/?(?<segment>.*), /$\{segment}
 
