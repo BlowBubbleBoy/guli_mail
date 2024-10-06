@@ -64,8 +64,6 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
             if (null != max) {
                 wrapper.le("price", params.get("max"));
             }
-
-
         }
 
         IPage<SkuInfoEntity> page = this.page(new Query<SkuInfoEntity>().getPage(params), wrapper);

@@ -3,6 +3,7 @@ package com.bubbleboy.gulimall.ware.service.impl;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.bubbleboy.gulimall.common.constant.WareConstant;
 import com.bubbleboy.gulimall.ware.entity.PurchaseDetailEntity;
+import com.bubbleboy.gulimall.ware.entity.WareSkuEntity;
 import com.bubbleboy.gulimall.ware.service.PurchaseDetailService;
 import com.bubbleboy.gulimall.ware.vo.PurchaseDetailMergeVo;
 import com.bubbleboy.gulimall.ware.vo.PurchaseFinishedVo;
@@ -28,9 +29,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class PurchaseServiceImpl extends ServiceImpl<PurchaseDao, PurchaseEntity> implements PurchaseService {
 
     private final PurchaseDetailServiceImpl purchaseDetailService;
+    private final WareSkuServiceImpl wareSkuService;
 
-    public PurchaseServiceImpl(PurchaseDetailServiceImpl purchaseDetailService) {
+    public PurchaseServiceImpl(PurchaseDetailServiceImpl purchaseDetailService, WareSkuServiceImpl wareSkuService) {
         this.purchaseDetailService = purchaseDetailService;
+        this.wareSkuService = wareSkuService;
     }
 
     @Override
@@ -76,7 +79,7 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseDao, PurchaseEntity
             return purchaseDetailEntity;
         }).collect(Collectors.toList());
 
-        purchaseDetailService.saveBatch(purchaseDetailEntityList);
+        purchaseDetailService.updateBatchById(purchaseDetailEntityList);
         PurchaseEntity purchaseEntity = new PurchaseEntity();
         purchaseEntity.setId(purchaseId);
         purchaseEntity.setStatus(WareConstant.PurchaseStatus.ALLOCATED.getCode());
@@ -112,6 +115,7 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseDao, PurchaseEntity
 
     // TODO
     @Override
+    @Transactional
     public void purchaseFinished(PurchaseFinishedVo purchaseFinishedVo) {
         PurchaseEntity purchaseEntity = new PurchaseEntity();
         purchaseEntity.setId(purchaseFinishedVo.getId());
@@ -120,12 +124,29 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseDao, PurchaseEntity
         boolean flag = true;
         List<PurchaseItemVo> items = purchaseFinishedVo.getItems();
 
+        ArrayList<PurchaseDetailEntity> updates = new ArrayList<>();
         for (PurchaseItemVo item : items) {
+            PurchaseDetailEntity purchaseDetailEntity = new PurchaseDetailEntity();
             if (item.getStatue() == WareConstant.PurchaseDetailStatus.PURCHASEFAILED.getCode()) {
                 flag = false;
-            }
-        }
+                purchaseDetailEntity.setStatus(item.getStatue());
+            } else {
+                purchaseDetailEntity.setStatus(WareConstant.PurchaseDetailStatus.FINISHED.getCode());
+                PurchaseDetailEntity purchaseDetail = purchaseDetailService.getById(item.getItemId());
 
+                wareSkuService.addStock(purchaseDetail.getSkuId(), purchaseDetail.getWareId(), purchaseDetail.getSkuNum());
+            }
+
+            purchaseDetailEntity.setId(item.getItemId());
+            updates.add(purchaseDetailEntity);
+        }
+        purchaseDetailService.updateBatchById(updates);
+
+        PurchaseEntity purchase = new PurchaseEntity();
+        purchase.setId(purchaseFinishedVo.getId());
+        purchase.setStatus(flag ? WareConstant.PurchaseStatus.FINISHED.getCode() : WareConstant.PurchaseStatus.HASERROR.getCode());
+        purchase.setUpdateTime(new Date());
+        this.updateById(purchase);
 
     }
 

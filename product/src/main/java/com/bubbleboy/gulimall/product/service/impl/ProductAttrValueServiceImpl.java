@@ -2,8 +2,12 @@ package com.bubbleboy.gulimall.product.service.impl;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -33,6 +37,19 @@ public class ProductAttrValueServiceImpl extends ServiceImpl<ProductAttrValueDao
     @Transactional
     public void saveProductAttr(List<ProductAttrValueEntity> productAttrValueEntities) {
         this.saveBatch(productAttrValueEntities);
+    }
+
+    @Override
+    public List<ProductAttrValueEntity> baseListForSpu(Long spuId) {
+        return list(new QueryWrapper<ProductAttrValueEntity>().eq("spu_id", spuId));
+    }
+
+    @Override
+    @Transactional
+    public void updateAttrValue(Long spuId, List<ProductAttrValueEntity> entities) {
+        remove(new QueryWrapper<ProductAttrValueEntity>().eq("spu_id", spuId));
+        entities.forEach(entity -> entity.setSpuId(spuId));
+        saveBatch(entities);
     }
 
 }

@@ -3,6 +3,9 @@ package com.bubbleboy.gulimall.product.controller;
 
 import com.bubbleboy.gulimall.common.utils.PageUtils;
 import com.bubbleboy.gulimall.common.utils.R;
+import com.bubbleboy.gulimall.product.entity.AttrEntity;
+import com.bubbleboy.gulimall.product.entity.ProductAttrValueEntity;
+import com.bubbleboy.gulimall.product.service.impl.ProductAttrValueServiceImpl;
 import com.bubbleboy.gulimall.product.vo.AttrRespVo;
 import com.bubbleboy.gulimall.product.vo.AttrVo;
 import com.bubbleboy.gulimall.product.service.AttrService;
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,6 +28,8 @@ import java.util.Map;
 public class AttrController {
     @Autowired
     private AttrService attrService;
+    @Autowired
+    private ProductAttrValueServiceImpl productAttrValueService;
 
 
     /**
@@ -45,6 +51,14 @@ public class AttrController {
 
         return R.ok().put("page", page);
 
+    }
+
+    @GetMapping("/base/listforspu/{spuId}")
+    public R baseListForSpu(@PathVariable("spuId") Long spuId) {
+
+        List<ProductAttrValueEntity> data = productAttrValueService.baseListForSpu(spuId);
+
+        return R.ok().put("data", data);
     }
 
 
@@ -76,6 +90,14 @@ public class AttrController {
     //@RequiresPermissions("product:attr:update")
     public R update(@RequestBody AttrVo attr) {
         attrService.updateAttrInfo(attr);
+
+        return R.ok();
+    }
+
+    @RequestMapping("/update/{spuId}")
+    //@RequiresPermissions("product:attr:update")
+    public R updateAttrValue( @PathVariable("spuId") Long spuId,@RequestBody List<ProductAttrValueEntity> entities) {
+        productAttrValueService.updateAttrValue(spuId,entities);
 
         return R.ok();
     }

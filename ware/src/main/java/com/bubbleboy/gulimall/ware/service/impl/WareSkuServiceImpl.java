@@ -1,8 +1,13 @@
 package com.bubbleboy.gulimall.ware.service.impl;
 
+import com.bubbleboy.gulimall.common.utils.R;
+import com.bubbleboy.gulimall.ware.feign.ProductFeignService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -14,10 +19,20 @@ import com.bubbleboy.gulimall.common.utils.Query;
 import com.bubbleboy.gulimall.ware.dao.WareSkuDao;
 import com.bubbleboy.gulimall.ware.entity.WareSkuEntity;
 import com.bubbleboy.gulimall.ware.service.WareSkuService;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("wareSkuService")
+@Slf4j
 public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> implements WareSkuService {
+
+    private final WareSkuDao wareSkuDao;
+    @Autowired
+    private ProductFeignService productFeignService;
+
+    public WareSkuServiceImpl(WareSkuDao wareSkuDao) {
+        this.wareSkuDao = wareSkuDao;
+    }
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -38,6 +53,31 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    @Transactional
+    public void addStock(Long skuId, Long wareId, Integer skuNum) {
+
+        List<WareSkuEntity> wareSkuEntities = wareSkuDao.selectList(new QueryWrapper<WareSkuEntity>().eq("sku_id", skuId).eq("ware_id", wareId));
+        if (wareSkuEntities.isEmpty()) {
+            WareSkuEntity wareSkuEntity = new WareSkuEntity();
+            wareSkuEntity.setSkuId(skuId);
+            wareSkuEntity.setWareId(wareId);
+            wareSkuEntity.setStock(skuNum);
+            wareSkuEntity.setStockLocked(0);
+            try {
+                R r = productFeignService.skuName(skuId);
+                if (r.getCode() == 0) {
+                    wareSkuEntity.setSkuName((String) r.get("skuName"));
+                }
+            } catch (RuntimeException e) {
+                log.error(e.getMessage(), e);
+            }
+            wareSkuDao.insert(wareSkuEntity);
+        }
+
+        wareSkuDao.addStock(skuId, wareId, skuNum);
     }
 
 }
