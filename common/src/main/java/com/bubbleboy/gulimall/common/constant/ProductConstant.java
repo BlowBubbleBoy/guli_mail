@@ -19,4 +19,17 @@ public class ProductConstant {
         }
 
     }
+
+    @Getter
+    public enum SpuStatusEnum {
+        CREATED(0, "新建"), AVAILABLE(1, "上架"), REMOVED(2, "下架");
+        private final Integer code;
+        private final String desc;
+
+        SpuStatusEnum(Integer code, String desc) {
+            this.code = code;
+            this.desc = desc;
+        }
+
+    }
 }

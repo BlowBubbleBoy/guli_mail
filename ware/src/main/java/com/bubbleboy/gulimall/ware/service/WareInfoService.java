@@ -3,7 +3,9 @@ package com.bubbleboy.gulimall.ware.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.bubbleboy.gulimall.common.utils.PageUtils;
 import com.bubbleboy.gulimall.ware.entity.WareInfoEntity;
+import com.bubbleboy.gulimall.ware.vo.SkuHasStockVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**

@@ -84,4 +84,12 @@ public class SpuInfoController {
         return R.ok();
     }
 
+
+    @PostMapping("/{spuId}/up")
+    //@RequiresPermissions("product:spuinfo:list")
+    public R productListing(@PathVariable("spuId") Long spuId){
+        spuInfoService.productListing(spuId);
+
+        return R.ok();
+    }
 }

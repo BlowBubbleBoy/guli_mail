@@ -3,7 +3,7 @@
 
 <mapper namespace="com.bubbleboy.gulimall.product.dao.AttrDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.bubbleboy.gulimall.product.entity.AttrEntity" id="attrMap">
         <result property="attrId" column="attr_id"/>
         <result property="attrName" column="attr_name"/>
@@ -16,6 +16,16 @@
         <result property="catalogId" column="catalog_id"/>
         <result property="showDesc" column="show_desc"/>
     </resultMap>
+    <select id="getSearchAttrIds" resultType="java.lang.Long">
+        SELECT attr_id
+        FROM pms_attr
+        WHERE search_type = 1
+        AND
+        attr_id IN
+        <foreach collection="attrIds" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
 
 
 </mapper>

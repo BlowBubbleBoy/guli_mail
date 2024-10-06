@@ -17,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -45,6 +46,8 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     private AttrGroupDao attrGroupDao;
     @Autowired
     private AttrAttrgroupRelationDao attrAttrgroupRelationDao;
+    @Autowired
+    private AttrDao attrDao;
 
 
     @Override
@@ -184,6 +187,11 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         IPage<AttrEntity> page = this.page(new Query<AttrEntity>().getPage(params), wrapper);
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public List<Long> getSearchAttrIds(List<Long> attrIds) {
+        return attrDao.getSearchAttrIds(attrIds);
     }
 
 }

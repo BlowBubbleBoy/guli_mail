@@ -1,15 +1,13 @@
 package com.bubbleboy.gulimall.ware.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.bubbleboy.gulimall.ware.vo.SkuHasStockVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.bubbleboy.gulimall.ware.entity.WareSkuEntity;
 import com.bubbleboy.gulimall.ware.service.WareSkuService;
@@ -85,6 +83,15 @@ public class WareSkuController {
 		wareSkuService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
+    }
+
+    @PostMapping("/hasStock")
+    public R getSkuHasStock(@RequestBody List<Long> skuIds){
+
+
+        List<SkuHasStockVo> data=  wareSkuService.getSkuHasStock(skuIds);
+
+        return R.ok().put("data", data);
     }
 
 }

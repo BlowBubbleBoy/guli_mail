@@ -113,7 +113,7 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseDao, PurchaseEntity
 
     }
 
-    // TODO
+
     @Override
     @Transactional
     public void purchaseFinished(PurchaseFinishedVo purchaseFinishedVo) {

@@ -1,7 +1,11 @@
 package com.bubbleboy.gulimall.ware.service.impl;
 
+import com.bubbleboy.gulimall.ware.vo.SkuHasStockVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;

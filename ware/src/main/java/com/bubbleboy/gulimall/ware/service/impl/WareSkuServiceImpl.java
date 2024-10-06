@@ -1,14 +1,18 @@
 package com.bubbleboy.gulimall.ware.service.impl;
 
 import com.bubbleboy.gulimall.common.utils.R;
+import com.bubbleboy.gulimall.ware.entity.WareInfoEntity;
 import com.bubbleboy.gulimall.ware.feign.ProductFeignService;
+import com.bubbleboy.gulimall.ware.vo.SkuHasStockVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -78,6 +82,19 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
         }
 
         wareSkuDao.addStock(skuId, wareId, skuNum);
+    }
+
+
+    @Override
+    public List<SkuHasStockVo> getSkuHasStock(List<Long> skuIds) {
+        List<WareSkuEntity> wareInfoEntities = list(new QueryWrapper<WareSkuEntity>().in("sku_id", skuIds));
+        return wareInfoEntities.stream().map(item -> {
+            SkuHasStockVo skuHasStockVo = new SkuHasStockVo();
+            skuHasStockVo.setSkuId(item.getSkuId());
+            Integer stock = item.getStock();
+            skuHasStockVo.setHasStock(stock != null && stock - item.getStockLocked() > 0);
+            return skuHasStockVo;
+        }).collect(Collectors.toList());
     }
 
 }
